@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"strings"
 	"text/template"
 	"unicode"
@@ -12,20 +13,21 @@ import (
 
 func main() {
 	http.HandleFunc("/styles/", styleFunc)
-
 	http.HandleFunc("/ascii-art", ResultFunc)
 	http.HandleFunc("/", formFunc)
-	http.HandleFunc("/notfound", notFoundFunc)
-	http.HandleFunc("/MethodNotAllowed", MethodNotAllowedFunc)
-	http.HandleFunc("/internalServer", internalServerFunc)
-
 	fmt.Println("Server running at http://localhost:8080/")
 	http.ListenAndServe(":8080", nil)
 }
 
 func styleFunc(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path == "/styles/" || !strings.HasSuffix(r.URL.Path, ".css") {
-		http.Redirect(w, r, "/notfound", http.StatusFound)
+	filePath := "styles" + strings.TrimPrefix(r.URL.Path, "/styles")
+
+	// Check if the file exists
+	if _, err := os.Stat(filePath); os.IsNotExist(err) || r.URL.Path == "/styles/" || !strings.HasSuffix(r.URL.Path, "css") {
+		// Redirect to /notfound if the file doesn't exist
+		tp, _ := template.ParseFiles("template/notfound.html")
+		w.WriteHeader(http.StatusNotFound)
+		tp.Execute(w, nil)
 		return
 	}
 	http.StripPrefix("/styles", http.FileServer(http.Dir("styles"))).ServeHTTP(w, r)
@@ -33,13 +35,18 @@ func styleFunc(w http.ResponseWriter, r *http.Request) {
 
 func formFunc(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
-		http.Redirect(w, r, "/notfound", http.StatusFound)
+		tp, _ := template.ParseFiles("template/notfound.html")
+
+		w.WriteHeader(http.StatusNotFound)
+		tp.Execute(w, nil)
 		return
 	}
 
 	tp2, _ := template.ParseFiles("template/index.html")
 	if r.Method != http.MethodGet {
-		http.Redirect(w, r, "/MethodNotAllowed", http.StatusFound)
+		tp, _ := template.ParseFiles("template/MethodNotAllowed.html")
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		tp.Execute(w, nil)
 		return
 	}
 
@@ -48,12 +55,16 @@ func formFunc(w http.ResponseWriter, r *http.Request) {
 
 func ResultFunc(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/ascii-art" {
-		http.Redirect(w, r, "/notfound", http.StatusFound)
+		tp, _ := template.ParseFiles("template/notfound.html")
+		w.WriteHeader(http.StatusNotFound)
+		tp.Execute(w, nil)
 		return
 	}
 
 	if r.Method != http.MethodPost {
-		http.Redirect(w, r, "/MethodNotAllowed", http.StatusFound)
+		tp, _ := template.ParseFiles("template/MethodNotAllowed.html")
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		tp.Execute(w, nil)
 		return
 	}
 
@@ -87,30 +98,13 @@ func ResultFunc(w http.ResponseWriter, r *http.Request) {
 	LastResult := ascii.Ascii(word, typee)
 
 	if LastResult == "" {
-		http.Redirect(w, r, "/internalServer", http.StatusFound)
+		tp, _ := template.ParseFiles("template/internalServer.html")
+		w.WriteHeader(http.StatusInternalServerError)
+		tp.Execute(w, nil)
 		return
-
 	}
 
 	tp2, _ := template.ParseFiles("template/result.html")
 
 	tp2.Execute(w, LastResult)
-}
-
-func notFoundFunc(w http.ResponseWriter, r *http.Request) {
-	tp, _ := template.ParseFiles("template/notfound.html")
-	w.WriteHeader(http.StatusNotFound)
-	tp.Execute(w, nil)
-}
-
-func MethodNotAllowedFunc(w http.ResponseWriter, r *http.Request) {
-	tp, _ := template.ParseFiles("template/MethodNotAllowed.html")
-	w.WriteHeader(http.StatusMethodNotAllowed)
-	tp.Execute(w, nil)
-}
-
-func internalServerFunc(w http.ResponseWriter, r *http.Request) {
-	tp, _ := template.ParseFiles("template/internalServer.html")
-	w.WriteHeader(http.StatusInternalServerError)
-	tp.Execute(w, nil)
 }
