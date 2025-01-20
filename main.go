@@ -11,21 +11,24 @@ import (
 )
 
 func main() {
-	http.Handle("/styles/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path == "/styles/" || !strings.HasSuffix(r.URL.Path, ".css") {
-			http.Redirect(w, r, "/notfound", http.StatusFound)
-			return
-		}
-		http.StripPrefix("/styles", http.FileServer(http.Dir("styles"))).ServeHTTP(w, r)
-	}))
+	http.HandleFunc("/styles/", styleFunc)
 
 	http.HandleFunc("/ascii-art", ResultFunc)
 	http.HandleFunc("/", formFunc)
 	http.HandleFunc("/notfound", notFoundFunc)
 	http.HandleFunc("/MethodNotAllowed", MethodNotAllowedFunc)
+	http.HandleFunc("/internalServer", internalServerFunc)
 
 	fmt.Println("Server running at http://localhost:8080/")
 	http.ListenAndServe(":8080", nil)
+}
+
+func styleFunc(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path == "/styles/" || !strings.HasSuffix(r.URL.Path, ".css") {
+		http.Redirect(w, r, "/notfound", http.StatusFound)
+		return
+	}
+	http.StripPrefix("/styles", http.FileServer(http.Dir("styles"))).ServeHTTP(w, r)
 }
 
 func formFunc(w http.ResponseWriter, r *http.Request) {
@@ -58,11 +61,6 @@ func ResultFunc(w http.ResponseWriter, r *http.Request) {
 	typee := r.FormValue("typee")
 
 	var errorMessage string
-	LastResult := ascii.Ascii(word, typee)
-
-	if LastResult == "" {
-		errorMessage = " invalid file "
-	}
 
 	if word == "" {
 		errorMessage = "Please enter a word."
@@ -86,6 +84,13 @@ func ResultFunc(w http.ResponseWriter, r *http.Request) {
 
 		return
 	}
+	LastResult := ascii.Ascii(word, typee)
+
+	if LastResult == "" {
+		http.Redirect(w, r, "/internalServer", http.StatusFound)
+		return
+
+	}
 
 	tp2, _ := template.ParseFiles("template/result.html")
 
@@ -101,5 +106,11 @@ func notFoundFunc(w http.ResponseWriter, r *http.Request) {
 func MethodNotAllowedFunc(w http.ResponseWriter, r *http.Request) {
 	tp, _ := template.ParseFiles("template/MethodNotAllowed.html")
 	w.WriteHeader(http.StatusMethodNotAllowed)
+	tp.Execute(w, nil)
+}
+
+func internalServerFunc(w http.ResponseWriter, r *http.Request) {
+	tp, _ := template.ParseFiles("template/internalServer.html")
+	w.WriteHeader(http.StatusInternalServerError)
 	tp.Execute(w, nil)
 }
