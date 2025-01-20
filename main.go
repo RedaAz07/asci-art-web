@@ -1,110 +1,162 @@
-package main
+	package main
 
-import (
-	"fmt"
-	"net/http"
-	"os"
-	"strings"
-	"text/template"
-	"unicode"
+	import (
+		"fmt"
+		"net/http"
+		"os"
+		"strings"
+		"text/template"
+		"unicode"
 
-	ascii "ascii/functions"
-)
+		ascii "ascii/functions"
+	)
 
-func main() {
-	http.HandleFunc("/styles/", styleFunc)
-	http.HandleFunc("/ascii-art", ResultFunc)
-	http.HandleFunc("/", formFunc)
-	fmt.Println("Server running at http://localhost:8080/")
-	http.ListenAndServe(":8080", nil)
-}
+	var tp *template.Template
 
-func styleFunc(w http.ResponseWriter, r *http.Request) {
-	filePath := "styles" + strings.TrimPrefix(r.URL.Path, "/styles")
-
-	// Check if the file exists
-	if _, err := os.Stat(filePath); os.IsNotExist(err) || r.URL.Path == "/styles/" || !strings.HasSuffix(r.URL.Path, "css") {
-		// Redirect to /notfound if the file doesn't exist
-		tp, _ := template.ParseFiles("template/notfound.html")
-		w.WriteHeader(http.StatusNotFound)
-		tp.Execute(w, nil)
-		return
-	}
-	http.StripPrefix("/styles", http.FileServer(http.Dir("styles"))).ServeHTTP(w, r)
-}
-
-func formFunc(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		tp, _ := template.ParseFiles("template/notfound.html")
-
-		w.WriteHeader(http.StatusNotFound)
-		tp.Execute(w, nil)
-		return
+	type ErrorPage struct {
+		Code         int
+		ErrorMessage string
 	}
 
-	tp2, _ := template.ParseFiles("template/index.html")
-	if r.Method != http.MethodGet {
-		tp, _ := template.ParseFiles("template/MethodNotAllowed.html")
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		tp.Execute(w, nil)
-		return
+	func main() {
+		var err error
+
+		tp, err = template.ParseGlob("template/*.html")
+		if err != nil {
+			fmt.Println("errror bro ", err)
+		}
+
+		http.HandleFunc("/styles/", styleFunc)
+		http.HandleFunc("/ascii-art", ResultFunc)
+		http.HandleFunc("/", formFunc)
+		fmt.Println("Server running at http://localhost:8080/")
+		http.ListenAndServe(":8080", nil)
 	}
 
-	tp2.Execute(w, nil)
-}
+	func styleFunc(w http.ResponseWriter, r *http.Request) {
+		filePath := "styles" + strings.TrimPrefix(r.URL.Path, "/styles")
 
-func ResultFunc(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/ascii-art" {
-		tp, _ := template.ParseFiles("template/notfound.html")
-		w.WriteHeader(http.StatusNotFound)
-		tp.Execute(w, nil)
-		return
+		if _, err := os.Stat(filePath); os.IsNotExist(err) || r.URL.Path == "/styles/" || !strings.HasSuffix(r.URL.Path, "css") {
+
+			errore := ErrorPage{
+				Code:         http.StatusNotFound,
+				ErrorMessage: "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.",
+			}
+
+			w.WriteHeader(http.StatusNotFound)
+			tp.ExecuteTemplate(w, "notfound.html", errore)
+			return
+		}
+		http.StripPrefix("/styles", http.FileServer(http.Dir("styles"))).ServeHTTP(w, r)
 	}
 
-	if r.Method != http.MethodPost {
-		tp, _ := template.ParseFiles("template/MethodNotAllowed.html")
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		tp.Execute(w, nil)
-		return
+	func formFunc(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/" {
+			errore := ErrorPage{
+				Code:         http.StatusNotFound,
+				ErrorMessage: "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.",
+			}
+
+			w.WriteHeader(http.StatusNotFound)
+
+			tp.ExecuteTemplate(w, "notfound.html", errore)
+			return
+		}
+
+		if r.Method != http.MethodGet {
+
+			errore := ErrorPage{
+				Code:         http.StatusMethodNotAllowed,
+				ErrorMessage: "  The request method is not supported for the requested resource. Please use the correct HTTP method. ",
+			}
+
+			w.WriteHeader(http.StatusMethodNotAllowed)
+
+			tp.ExecuteTemplate(w, "notfound.html", errore)
+			return
+		}
+
+		tp.ExecuteTemplate(w, "index.html", nil)
 	}
 
-	word := r.FormValue("word")
-	typee := r.FormValue("typee")
+	func ResultFunc(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/ascii-art" {
 
-	var errorMessage string
+			errore := ErrorPage{
+				Code:         http.StatusNotFound,
+				ErrorMessage: "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.",
+			}
 
-	if word == "" {
-		errorMessage = "Please enter a word."
-	} else if typee == "" {
-		errorMessage = "Please select a type."
-	} else if len(word) > 1000 {
-		errorMessage = "The word length should not exceed 1000 characters."
-	} else {
-		for i := 0; i < len(word); i++ {
-			if unicode.IsLetter(rune(word[i])) && (word[i] < 32 || word[i] > 126) {
-				errorMessage = "invalid charts"
-				break
+			w.WriteHeader(http.StatusNotFound)
+			tp.ExecuteTemplate(w, "notfound.html", errore)
+			return
+		}
+
+		if r.Method != http.MethodPost {
+
+			errore := ErrorPage{
+				Code:         http.StatusMethodNotAllowed,
+				ErrorMessage: " The request method is not supported for the requested resource. Please use the correct HTTP method.",
+			}
+
+			w.WriteHeader(http.StatusMethodNotAllowed)
+
+			tp.ExecuteTemplate(w, "notfound.html", errore)
+			return
+		}
+
+
+
+
+
+
+
+
+
+
+		word := r.FormValue("word")
+		typee := r.FormValue("typee")
+
+		var errorMessage string
+
+		if word == "" {
+			errorMessage = "Please enter a word."
+		} else if typee == "" {
+			errorMessage = "Please select a type."
+		} else if len(word) > 1000 {
+			errorMessage = "The word length should not exceed 1000 characters."
+		} else {
+			for i := 0; i < len(word); i++ {
+				if unicode.IsLetter(rune(word[i])) && (word[i] < 32 || word[i] > 126) {
+					errorMessage = "invalid charts"
+					break
+				}
 			}
 		}
+
+		if errorMessage != "" {
+
+			w.WriteHeader(http.StatusBadRequest)
+			tp.ExecuteTemplate(w, "index.html", errorMessage)
+
+			return
+		}
+		LastResult := ascii.Ascii(word, typee)
+
+		if LastResult == "" {
+
+			
+			errore := ErrorPage{
+				Code:         http.StatusInternalServerError,
+				ErrorMessage: " Something went wrong on our end. We are working to resolve the issue. Please try again later.  ",
+			}
+
+			w.WriteHeader(http.StatusInternalServerError)
+
+			tp.ExecuteTemplate(w, "notfound.html", errore)
+			return
+		}
+
+		tp.ExecuteTemplate(w, "result.html", LastResult)
+		
 	}
-
-	if errorMessage != "" {
-		tp1, _ := template.ParseFiles("template/index.html")
-		w.WriteHeader(http.StatusBadRequest)
-		tp1.Execute(w, errorMessage)
-
-		return
-	}
-	LastResult := ascii.Ascii(word, typee)
-
-	if LastResult == "" {
-		tp, _ := template.ParseFiles("template/internalServer.html")
-		w.WriteHeader(http.StatusInternalServerError)
-		tp.Execute(w, nil)
-		return
-	}
-
-	tp2, _ := template.ParseFiles("template/result.html")
-
-	tp2.Execute(w, LastResult)
-}

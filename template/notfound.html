@@ -9,10 +9,9 @@
 <body>
     <div class="container">
         <h1 class="oops">Oops!</h1>
-        <h2 class="error-code">404 - PAGE NOT FOUND</h2>
+        <h2 class="error-code">{{.Code}}</h2>
         <p class="message">
-            The page you are looking for might have been removed, had its name changed, 
-            or is temporarily unavailable.
+             {{.ErrorMessage}}
         </p>
         <a href="/" class="home-btn">Go to Homepage</a>
     </div>
