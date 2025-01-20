@@ -80,7 +80,7 @@ button {
     width: 400px;
   }
   h1 {
-    font-size: 30px;
+    font-size: 33px;
   }
 }
 
@@ -89,7 +89,27 @@ button {
     width: 280px;
   }
   h1 {
+    font-size: 25px;
+  }
+  button{
+  height: 45px;
+  width: 180px;
+  }
+}
+@media only screen and (max-width: 340px) {
+  .container {
+    width: 200px;
+  }
+  h1 {
     font-size: 20px;
+  }
+  button{
+  height: 40px;
+  width: 150px;
+  }
+  .radio-input {
+    display: flex;
+    align-items: center;
   }
 }
 

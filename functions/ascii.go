@@ -23,35 +23,35 @@ func Ascii(word string, typee string) string {
 	}
 	defer file.Close()
 
-	run := []string{}
+	SliceRune := []string{}
 	AsciiMap := map[rune][]string{}
 	count := 0
-	space := ' '
+	espace := ' '
 	Myscanner := bufio.NewScanner(file)
 
 	for Myscanner.Scan() {
 		text := Myscanner.Text()
 		if text != "" {
-			run = append(run, text)
+			SliceRune = append(SliceRune, text)
 			count++
 		}
 		if count == 8 {
-			AsciiMap[space] = run
-			space++
-			run = []string{}
+			AsciiMap[espace] = SliceRune
+			espace++
+			SliceRune = []string{}
 			count = 0
 		}
 	}
 
-	splitSlice := strings.Split(word, "\n")
+	Splitslice := strings.Split(word, "\n")
 
-	var laste string
+	var LastResult string
 	if strings.Replace(word, "\n", "", -1) == "" {
 		for i := 0; i < strings.Count(word, "\n"); i++ {
-			laste += "\n"
+			LastResult += "\n"
 		}
 	}
-	laste = PrintAscii(splitSlice, AsciiMap)
+	LastResult = PrintAscii(Splitslice, AsciiMap)
 
-	return laste
+	return LastResult
 }

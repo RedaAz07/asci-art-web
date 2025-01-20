@@ -13,7 +13,6 @@
     <form action="/ascii-art" method="post" >
         <div class="container"  style="text-align: center;">
                 <!--  affichier the error   -->
-
             {{if  .     }}
             <div class="error">
                 <div class="error__icon">
@@ -24,7 +23,7 @@
             
             {{end}}
             <h1>Ascii Art Web</h1>
-            <textarea name="word" id="" class="input" placeholder="Type text here ..."></textarea>
+            <textarea name="word" maxlength="1000" id="" class="input" placeholder="Type text here ..."></textarea>
             <div class="radio-input">
                 <label class="label">
                     <input type="radio" id="value-1" name="typee" value="shadow" />
@@ -39,9 +38,6 @@
                     <p class="text">Thinkertoy</p>
                 </label>
             </div>
-
-
-
             <button type="submit">Generate</button>
         </div>
     </form>

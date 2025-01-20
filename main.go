@@ -12,7 +12,7 @@ import (
 
 func main() {
 	http.Handle("/styles/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path == "/styles/" || !strings.HasSuffix(r.URL.Path, "css") {
+		if r.URL.Path == "/styles/" || !strings.HasSuffix(r.URL.Path, ".css") {
 			http.Redirect(w, r, "/notfound", http.StatusFound)
 			return
 		}
@@ -58,9 +58,9 @@ func ResultFunc(w http.ResponseWriter, r *http.Request) {
 	typee := r.FormValue("typee")
 
 	var errorMessage string
-	laste := ascii.Ascii(word, typee)
+	LastResult := ascii.Ascii(word, typee)
 
-	if laste == "" {
+	if LastResult == "" {
 		errorMessage = " invalid file "
 	}
 
@@ -68,12 +68,12 @@ func ResultFunc(w http.ResponseWriter, r *http.Request) {
 		errorMessage = "Please enter a word."
 	} else if typee == "" {
 		errorMessage = "Please select a type."
-	} else if len(word) > 5000 {
-		errorMessage = "The word length should not exceed 5000 characters."
+	} else if len(word) > 1000 {
+		errorMessage = "The word length should not exceed 1000 characters."
 	} else {
 		for i := 0; i < len(word); i++ {
 			if unicode.IsLetter(rune(word[i])) && (word[i] < 32 || word[i] > 126) {
-				errorMessage = "invalid charts  "
+				errorMessage = "invalid charts"
 				break
 			}
 		}
@@ -89,7 +89,7 @@ func ResultFunc(w http.ResponseWriter, r *http.Request) {
 
 	tp2, _ := template.ParseFiles("template/result.html")
 
-	tp2.Execute(w, laste)
+	tp2.Execute(w, LastResult)
 }
 
 func notFoundFunc(w http.ResponseWriter, r *http.Request) {
