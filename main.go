@@ -118,21 +118,26 @@
 		typee := r.FormValue("typee")
 
 		var errorMessage string
+	
+
 
 		if word == "" {
 			errorMessage = "Please enter a word."
 		} else if typee == "" {
 			errorMessage = "Please select a type."
-		} else if len(word) > 1000 {
+		} else if len(word) >= 1000 {
 			errorMessage = "The word length should not exceed 1000 characters."
-		} else {
-			for i := 0; i < len(word); i++ {
-				if unicode.IsLetter(rune(word[i])) && (word[i] < 32 || word[i] > 126) {
-					errorMessage = "invalid charts"
-					break
-				}
+		} 
+
+
+		for i := 0; i < len(word); i++ {
+			if unicode.IsLetter(rune(word[i])) && (word[i] < 32 || word[i] > 126) {
+				errorMessage = "invalid charts"
+				break
 			}
 		}
+
+		
 
 		if errorMessage != "" {
 
@@ -141,6 +146,11 @@
 
 			return
 		}
+
+
+
+
+
 		LastResult := ascii.Ascii(word, typee)
 
 		if LastResult == "" {
