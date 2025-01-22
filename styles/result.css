@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: wheat;
+    background-color: #988686;
     margin: 0;
     padding: 0;
     display: flex;
@@ -10,7 +10,7 @@ body {
 }
 
 .container {
-    background: whitesmoke;
+    background: #d1d0d0;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -21,7 +21,7 @@ body {
 }
 
 h1 {
-    color: #1649f0;
+    color: #411402;
     margin-bottom: 20px;
     font-size: 40px;
 }
@@ -43,7 +43,7 @@ h1 {
     display: inline-block;
     text-decoration: none;
     color: white;
-    background-color: #6c0ef8;
+    background-color: #5c4e4e;
     padding: 15px 30px;
     border-radius: 5px;
     font-size: 18px;
@@ -53,78 +53,7 @@ h1 {
 }
 
 .btn:hover {
-    background-color: #5311c7;
-}
-
-@media only screen and (max-width: 700px) {
-    .container {
-        width: 90%;
-    }
-
-    h1 {
-        font-size: 30px;
-    }
-
-    .btn {
-        font-size: 16px;
-        padding: 10px 20px;
-    }
-}body {
-    font-family: Arial, sans-serif;
-    background-color: wheat;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.container {
-    background: whitesmoke;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 600px;
-    max-width: 90%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-h1 {
-    color: #1649f0;
-    margin-bottom: 20px;
-    font-size: 40px;
-}
-
-.ascii-output {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 20px;
-    margin: 20px 0;
-    font-size: 16px;
-    font-family: 'Courier New', Courier, monospace;
-    white-space: pre-wrap;
-    overflow-x: auto;
-    max-height: 400px;
-}
-
-.btn {
-    display: inline-block;
-    text-decoration: none;
-    color: white;
-    background-color: #6c0ef8;
-    padding: 15px 30px;
-    border-radius: 5px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.btn:hover {
-    background-color: #5311c7;
+    background-color: #411402;
 }
 
 @media only screen and (max-width: 700px) {

@@ -1,6 +1,6 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: wheat;
+  background-color: #988686;
   margin: 0;
   padding: 0;
   display: flex;
@@ -10,7 +10,7 @@ body {
 }
 
 .container {
-  background: whitesmoke;
+  background: #d1d0d0;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -21,7 +21,7 @@ body {
 }
 
 h1 {
-  color: #1649f0;
+  color: #411402;
   margin-bottom: 40px;
   font-size: 50px;
 }
@@ -39,7 +39,7 @@ h1 {
 }
 
 button {
-  background-color: rgb(108, 14, 248);
+  background-color: #5c4e4e;
   color: white;
   border: none;
   font-size: 23px;
@@ -49,6 +49,11 @@ button {
   height: 55px;
   cursor: pointer;
   text-align: center;
+}
+
+
+button:hover {
+  background-color: #411402;
 }
 
 .radio-input {
