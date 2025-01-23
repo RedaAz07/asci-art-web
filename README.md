@@ -66,17 +66,22 @@ The main page includes:
 ```
 ASCII-ART-WEB/
 ├── files/           // Contains ASCII art files (e.g., shadow.txt, standard.txt, thinkertoy.txt)
+│   ├── shadow.txt
+│   ├── standard.txt
+│   ├── thinkertoy.txt
 ├── functions/       // Go logic for ASCII art generation
-│   ├── ascii.go
+│   ├── Ascii.go
 │   ├── PrintAscii.go
+├── handler/          // Handler functions (StyleHandler,ResultHandler,FormHandler)
+│   ├── Handlers.go
 ├── styles/          // CSS styles for the application
 │   ├── index.css
-│   ├── notFound.css
 │   ├── result.css
+│   ├── stausPage.css
 ├── template/        // HTML templates
 │   ├── index.html
-│   ├── notfound.html
 │   ├── result.html
+│   ├── stausPage.html
 ├── go.mod           // Go module file
 ├── main.go          // Main Go application
 └── README.md        // Documentation
