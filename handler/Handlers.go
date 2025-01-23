@@ -29,7 +29,7 @@ func StyleFunc(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.WriteHeader(http.StatusNotFound)
-		Tp.ExecuteTemplate(w, "notfound.html", errore)
+		Tp.ExecuteTemplate(w, "statusPage.html", errore)
 		return
 	}
 	http.StripPrefix("/styles", http.FileServer(http.Dir("styles"))).ServeHTTP(w, r)
@@ -43,7 +43,7 @@ func ResultFunc(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.WriteHeader(http.StatusNotFound)
-		Tp.ExecuteTemplate(w, "notfound.html", errore)
+		Tp.ExecuteTemplate(w, "statusPage.html", errore)
 		return
 	}
 
@@ -54,7 +54,7 @@ func ResultFunc(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.WriteHeader(http.StatusMethodNotAllowed)
-		Tp.ExecuteTemplate(w, "notfound.html", errore)
+		Tp.ExecuteTemplate(w, "statusPage.html", errore)
 		return
 	}
 
@@ -93,7 +93,7 @@ func ResultFunc(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.WriteHeader(http.StatusInternalServerError)
-		Tp.ExecuteTemplate(w, "notfound.html", errore)
+		Tp.ExecuteTemplate(w, "statusPage.html", errore)
 		return
 	}
 
@@ -105,7 +105,7 @@ func ResultFunc(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.WriteHeader(http.StatusInternalServerError)
-		Tp.ExecuteTemplate(w, "notfound.html", errore)
+		Tp.ExecuteTemplate(w, "statusPage.html", errore)
 	}
 }
 
@@ -117,7 +117,7 @@ func FormFunc(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.WriteHeader(http.StatusNotFound)
-		Tp.ExecuteTemplate(w, "notfound.html", errore)
+		Tp.ExecuteTemplate(w, "statusPage.html", errore)
 		return
 	}
 
@@ -128,7 +128,7 @@ func FormFunc(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.WriteHeader(http.StatusMethodNotAllowed)
-		Tp.ExecuteTemplate(w, "notfound.html", errore)
+		Tp.ExecuteTemplate(w, "statusPage.html", errore)
 		return
 	}
 
@@ -140,6 +140,6 @@ func FormFunc(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.WriteHeader(http.StatusInternalServerError)
-		Tp.ExecuteTemplate(w, "notfound.html", errore)
+		Tp.ExecuteTemplate(w, "statusPage.html", errore)
 	}
 }
