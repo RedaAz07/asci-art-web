@@ -65,6 +65,8 @@ The main page includes:
 ### Project Structure
 ```
 ASCII-ART-WEB/
+├── cmd/         // entry point of the project
+│   ├── main.go
 ├── files/           // Contains ASCII art files (e.g., shadow.txt, standard.txt, thinkertoy.txt)
 │   ├── shadow.txt
 │   ├── standard.txt
@@ -83,7 +85,6 @@ ASCII-ART-WEB/
 │   ├── result.html
 │   ├── stausPage.html
 ├── go.mod           // Go module file
-├── main.go          // Main Go application
 └── README.md        // Documentation
 
 ```
