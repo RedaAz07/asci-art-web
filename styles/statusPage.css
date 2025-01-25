@@ -1,52 +1,71 @@
-body, html {
-    margin: 0;
-    padding: 0;
-    font-family: 'Arial', sans-serif;
-    background-color: #f7f7f7;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: "Arial", sans-serif;
+  background-color: #f7f7f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .container {
-    text-align: center;
+  text-align: center;
 }
 
 .oops {
-    font-size: 170px;
-    font-weight: bold;
-    color: #4b0082;
-    background: url(https://www.shutterstock.com/image-vector/starry-vector-sky-seamless-pattern-260nw-2455385371.jpg) repeat;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 20px;
+  font-size: 170px;
+  font-weight: bold;
+  color: #4b0082;
+  background: url(https://www.shutterstock.com/image-vector/starry-vector-sky-seamless-pattern-260nw-2455385371.jpg)
+    repeat;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 20px;
 }
 
 .error-code {
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 15px;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 15px;
 }
 
 .message {
-    font-size: 16px;
-    color: #666;
-    margin-bottom: 30px;
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 30px;
 }
 
 .home-btn {
-    display: inline-block;
-    text-decoration: none;
-    background-color: #4b0082;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 12px 24px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+  display: inline-block;
+  text-decoration: none;
+  background-color: #4b0082;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 12px 24px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
 .home-btn:hover {
-    background-color: #360060; 
+  background-color: #360060;
+}
+
+@media only screen and (max-width: 500px) {
+  .oops {
+    font-size: 100px;
+  }
+  .home-btn {
+    font-size: 12px;
+  }
+}
+@media only screen and (max-width: 300px) {
+  .oops {
+    font-size: 80px;
+  }
+  .home-btn {
+    font-size: 10px;
+  }
 }
