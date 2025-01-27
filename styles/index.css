@@ -13,7 +13,6 @@ body {
   background: #d1d0d0;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
   width: 600px;
   height: auto;
@@ -119,7 +118,7 @@ button:hover {
 }
 
 .error {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial;
   width: 80%;
   padding: 12px;
   display: flex;
@@ -127,8 +126,7 @@ button:hover {
   text-align: center;
   justify-content: center;
   margin: auto;
-  flex-direction: row;
-  background: #EF665B;
+  background: #f15a4f;
   border-radius: 8px;
   box-shadow: 0px 0px 5px -3px #111;
 }
@@ -143,7 +141,7 @@ button:hover {
 }
 
 .error__title {
-  font-weight: 500;
+  font-weight: bold;
   font-size: 14px;
   color: #fff;
 }
@@ -151,12 +149,6 @@ button:hover {
 .error__icon {
   width: 20px;
   height: 20px;
-  transform: translateY(-2px);
-  margin-right: 8px;
-}
-
-.error__title {
-  font-weight: 500;
-  font-size: 14px;
-  color: #fff;
+  position: relative;
+  top: -2px;
 }

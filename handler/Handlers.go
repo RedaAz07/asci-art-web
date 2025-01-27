@@ -20,7 +20,6 @@ type ErrorPage struct {
 func StyleFunc(w http.ResponseWriter, r *http.Request) {
 	filePath := strings.TrimPrefix(r.URL.Path, "/")
 	File, err := os.Stat(filePath)
-
 	if err != nil || File.IsDir() {
 
 		errore := ErrorPage{
@@ -33,6 +32,41 @@ func StyleFunc(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	http.StripPrefix("/styles", http.FileServer(http.Dir("styles"))).ServeHTTP(w, r)
+}
+
+func FormFunc(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		errore := ErrorPage{
+			Code:         http.StatusNotFound,
+			ErrorMessage: "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.",
+		}
+
+		w.WriteHeader(http.StatusNotFound)
+		Tp.ExecuteTemplate(w, "statusPage.html", errore)
+		return
+	}
+
+	if r.Method != http.MethodGet {
+		errore := ErrorPage{
+			Code:         http.StatusMethodNotAllowed,
+			ErrorMessage: "The request method is not supported for the requested resource.",
+		}
+
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		Tp.ExecuteTemplate(w, "statusPage.html", errore)
+		return
+	}
+
+	err := Tp.ExecuteTemplate(w, "index.html", nil)
+	if err != nil {
+		errore := ErrorPage{
+			Code:         http.StatusInternalServerError,
+			ErrorMessage: "Something went wrong on our end. Please try again later.",
+		}
+
+		w.WriteHeader(http.StatusInternalServerError)
+		Tp.ExecuteTemplate(w, "statusPage.html", errore)
+	}
 }
 
 func ResultFunc(w http.ResponseWriter, r *http.Request) {
@@ -62,8 +96,8 @@ func ResultFunc(w http.ResponseWriter, r *http.Request) {
 	typee := r.FormValue("typee")
 
 	ctr := 0
-	for _, v := range word {
-		if v != '\r' {
+	for _, char := range word {
+		if char != '\r' {
 			ctr++
 		}
 	}
@@ -97,41 +131,6 @@ func ResultFunc(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err := Tp.ExecuteTemplate(w, "result.html", LastResult)
-	if err != nil {
-		errore := ErrorPage{
-			Code:         http.StatusInternalServerError,
-			ErrorMessage: "Something went wrong on our end. Please try again later.",
-		}
-
-		w.WriteHeader(http.StatusInternalServerError)
-		Tp.ExecuteTemplate(w, "statusPage.html", errore)
-	}
-}
-
-func FormFunc(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		errore := ErrorPage{
-			Code:         http.StatusNotFound,
-			ErrorMessage: "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.",
-		}
-
-		w.WriteHeader(http.StatusNotFound)
-		Tp.ExecuteTemplate(w, "statusPage.html", errore)
-		return
-	}
-
-	if r.Method != http.MethodGet {
-		errore := ErrorPage{
-			Code:         http.StatusMethodNotAllowed,
-			ErrorMessage: "The request method is not supported for the requested resource.",
-		}
-
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		Tp.ExecuteTemplate(w, "statusPage.html", errore)
-		return
-	}
-
-	err := Tp.ExecuteTemplate(w, "index.html", nil)
 	if err != nil {
 		errore := ErrorPage{
 			Code:         http.StatusInternalServerError,

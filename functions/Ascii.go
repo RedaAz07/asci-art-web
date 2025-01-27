@@ -46,12 +46,13 @@ func Ascii(word string, typee string) string {
 	Splitslice := strings.Split(word, "\n")
 
 	var LastResult string
-	if strings.Replace(word, "\n", "", -1) == "" {
+	if strings.ReplaceAll(word, "\n", "") == "" {
 		for i := 0; i < strings.Count(word, "\n"); i++ {
 			LastResult += "\n"
 		}
+	} else {
+		LastResult = PrintAscii(Splitslice, AsciiMap)
 	}
-	LastResult = PrintAscii(Splitslice, AsciiMap)
 
 	return LastResult
 }

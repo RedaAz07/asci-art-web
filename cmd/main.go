@@ -12,7 +12,7 @@ func main() {
 	var err error
 	handler.Tp, err = template.ParseGlob("template/*.html")
 	if err != nil {
-		fmt.Printf("Error parsing templates: %v\n", err)
+		fmt.Println("Error parsing templates: ", err)
 		return
 	}
 
