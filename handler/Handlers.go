@@ -120,8 +120,8 @@ func ResultFunc(w http.ResponseWriter, r *http.Request) {
 
 	LastResult := ascii.Ascii(word, typee)
 
-	if LastResult == "" {
-		errorMessage = " invalid file name !!!!! "
+	if LastResult == "" && word != "" && typee != "" {
+		errorMessage = "invalid file name !!!!!"
 	}
 
 	if errorMessage != "" {
